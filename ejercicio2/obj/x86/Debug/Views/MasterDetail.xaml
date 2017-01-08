@@ -1,0 +1,107 @@
+﻿<Page
+    x:Class="ejercicio2.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ejercicio2"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:ejercicio2.ViewModels"
+    mc:Ignorable="d"
+    >
+    
+    <Grid x:ConnectionId='1' x:Name="principal" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <!--Para hacer la aplicacion que se adapte-->
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:ConnectionId='2' x:Name="AdaptativeStates"                                                           >
+                <VisualState x:ConnectionId='3' x:Name="monitor">
+                    <VisualState.StateTriggers>
+                        <!--Se adapta cuando encuentre un ancho a partir de 720-->
+                        <AdaptiveTrigger MinWindowWidth="720"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="detalle.Width" Value="4*"/>
+                    </VisualState.Setters>
+                </VisualState>
+                
+                <!---->
+                <VisualState x:ConnectionId='4' x:Name="movil">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowHeight="0"/>
+                    </VisualState.StateTriggers>
+                    
+                    <VisualState.Setters>
+                        <Setter Target="detalle.Width" Value="0"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:ConnectionId='5' x:Name="maestro" Width="*"/>
+            <ColumnDefinition x:ConnectionId='6' x:Name="detalle" Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <ScrollViewer Grid.Column="0" Grid.Row="1">
+            <ListView x:ConnectionId='16' x:Name="listaPersonas" Margin="12" ItemsSource="{Binding listado,Mode=TwoWay,UpdateSourceTrigger=Explicit}" SelectedItem="{Binding personaSeleccionada, Mode=TwoWay}" IsItemClickEnabled="True"                               >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Nombre}"/>
+                            <TextBlock Text="{Binding Apellidos}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </ScrollViewer>
+        
+        <!--Stack panel de los botones-->
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="0">
+            <AppBarButton x:ConnectionId='13' x:Name="btnNuevo" Icon="Add" Command="{Binding crearCommand}"/>
+            <AppBarButton x:ConnectionId='14' x:Name="btnGuardar" Icon="Save" Command="{Binding guardarCommand}"                />
+            <AppBarButton x:ConnectionId='15' x:Name="btnEliminar" Icon="Delete" Command="{Binding eliminarCommand}"/>
+        </StackPanel>
+        
+        <!--Nos muestra el detalle de la persona seleccionada por el usuario-->
+        <Grid x:ConnectionId='7' x:Name="detalleSeleccion" Grid.Column="1" Grid.Row="1" DataContext="{Binding personaSeleccionada}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="7*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="4*"/>
+            </Grid.RowDefinitions>
+
+            <!--Representacion de los datos dentro del Grid-->
+            <!--Tienen que ser TextBox para que el usuario lo pueda editar y guardarlo directamente-->
+            <TextBlock Text="Nombre: " Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
+            <TextBox x:ConnectionId='8' x:Name="txtNombre" Grid.Column="1" Grid.Row="0" MaxHeight="40" Text="{Binding Nombre, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
+
+            <TextBlock Text="Apellidos: " Grid.Column="0" Grid.Row="1"  VerticalAlignment="Center"/>
+            <TextBox x:ConnectionId='9' x:Name="txtApellidos" Grid.Column="1" Grid.Row="1" MaxHeight="40" Text="{Binding Apellidos, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
+
+            <TextBlock Text="Fecha de nacimiento: " Grid.Column="0" Grid.Row="2"  VerticalAlignment="Center"/>
+            <TextBox x:ConnectionId='10' x:Name="txtFechaNac" Grid.Column="1" Grid.Row="2" MaxHeight="40" Text="{Binding FechaNac, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
+
+            <TextBlock Text="Telefono: " Grid.Column="0" Grid.Row="3" VerticalAlignment="Center"/>
+            <TextBox x:ConnectionId='11' x:Name="txtTelefono" Grid.Column="1" Grid.Row="3" MaxHeight="40" Text="{Binding Telefono, Mode=TwoWay, UpdateSourceTrigger=Explicit}"/>
+            
+            
+            <TextBlock  Text="Direccion" Grid.Column="0" Grid.Row="4"></TextBlock>
+            <ScrollViewer Grid.Column="1" Grid.Row="4">
+                <TextBox x:ConnectionId='12' x:Name="txtDireccion"  Text="{Binding Direccion, Mode=TwoWay, UpdateSourceTrigger=Explicit}" MinHeight="150" TextWrapping="Wrap"/>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</Page>
+
